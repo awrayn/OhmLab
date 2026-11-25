@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OhmLab: Simulasi Hukum Ohm & Rangkaian Listrik SMA</title>
+<meta name="description" content="Media simulasi interaktif Hukum Ohm, Rangkaian Seri dan Paralel untuk Fisika SMA.">
+<style>
+:root{--ink:#0f1b3d;--blue:#2f5bff;--sun:#ffd23f;--cyan:#22d3ee;--pink:#ff5d8f;--vio:#c4b5fd;--paper:#e9f0ff;--card:#fff;--line:#c9d4f5;--mut:#3d4767;--ok:#15803d;--bad:#c81e4b;--soft:#dbe6ff;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--paper);background-image:radial-gradient(#b4c4f4 1.3px,transparent 1.3px);background-size:22px 22px;color:var(--ink);font:17px/1.6 "Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif}
+header{background:var(--ink);position:sticky;top:0;z-index:5;border-bottom:4px solid var(--sun)}
+.bar{max-width:1020px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px;padding:8px 14px 6px}
+.brand{color:var(--sun);font-weight:900;font-size:1.3rem;letter-spacing:-.02em;white-space:nowrap}
+nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;order:3;flex:1 0 100%;min-width:0;position:relative;padding:3px 2px}
+nav button{background:none;border:2px solid transparent;color:#d6defa;font:inherit;font-weight:700;padding:6px 11px;border-radius:99px;cursor:pointer;white-space:nowrap;flex:none;z-index:1;transition:color .2s}
+nav button:hover{background:#ffffff1f}nav button.on,nav button.on:hover{background:none;color:var(--ink)}nav button:focus-visible{outline-offset:-3px}
+.stars{margin-left:auto;background:var(--sun);color:var(--ink);font-weight:900;border-radius:99px;padding:3px 12px;white-space:nowrap;border:2px solid #fff}
+.stars.pop{animation:pop .5s}@keyframes pop{40%{transform:scale(1.35) rotate(-6deg)}}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+main{max-width:1020px;margin:0 auto;padding:18px 14px 50px}
+.pg{display:none}.pg.on{display:block}
+h1{font-size:clamp(2rem,6.5vw,3.4rem);line-height:1.05;margin:.25em 0;letter-spacing:-.03em;font-weight:900}
+h2{font-size:1.8rem;margin:.2em 0 .5em;letter-spacing:-.02em;font-weight:900}h3{font-size:1.15rem;margin:1.2em 0 .3em;font-weight:800}
+p{max-width:72ch}.mut{color:var(--mut)}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);padding:16px;margin:16px 6px 16px 0}
+.btn{display:inline-block;background:var(--blue);color:#fff;border:2px solid var(--ink);border-radius:12px;padding:9px 18px;font:inherit;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn.alt{background:#fff;color:var(--ink)}.btn.sun{background:var(--sun);color:var(--ink)}.btn.sm{padding:5px 12px;font-size:.9rem;border-radius:9px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:740px){.g2{grid-template-columns:1fr}}
+.hero{background-color:#13245f;background-image:linear-gradient(#ffffff12 1px,transparent 1px),linear-gradient(90deg,#ffffff12 1px,transparent 1px);background-size:28px 28px;color:#fff;border:2px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--sun);padding:24px 20px;margin:4px 7px 22px 0;display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:center}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+.hero p{color:#d6defa}
+.chip{display:inline-block;background:var(--pink);color:#fff;font-weight:800;padding:2px 14px;border-radius:99px;transform:rotate(-2deg);border:2px solid #fff;font-size:.9rem}
+.trio{display:flex;gap:8px;margin:14px 0}
+.trio div{flex:1;background:#ffffff1a;border:2px solid #ffffff44;border-radius:12px;padding:6px;text-align:center}
+.trio b{display:block;font-size:2.2rem;line-height:1.1;color:var(--sun)}.trio span{font-size:.78rem;color:#d6defa}
+.demo{background:#0b1535;border:2px solid var(--cyan);border-radius:16px;padding:10px;box-shadow:0 0 28px #22d3ee55}
+.demo label{display:flex;justify-content:space-between;font-weight:800;margin-top:4px}
+.mis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 7px 10px 0}@media(max-width:700px){.mis{grid-template-columns:1fr 1fr}}
+.mis button{border:2px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:14px 8px;font:inherit;font-weight:800;cursor:pointer;color:var(--ink);transition:transform .1s}
+.mis button:hover{transform:translateY(-3px) rotate(-1deg)}.mis b{display:block;font-size:2.2rem;line-height:1.2}
+.mis button:nth-child(1){background:var(--sun)}.mis button:nth-child(2){background:var(--cyan)}.mis button:nth-child(3){background:var(--pink);color:#fff}.mis button:nth-child(4){background:var(--vio)}
+ol,ul{padding-left:1.3em;max-width:72ch}li{margin:.3em 0}
+svg{width:100%;height:auto;display:block}
+.sim{display:grid;grid-template-columns:1.18fr 1fr;gap:6px 14px}@media(max-width:800px){.sim{grid-template-columns:1fr}}
+.bench{background:var(--ink);color:#fff;box-shadow:5px 5px 0 var(--cyan)}.bench .eq{color:var(--sun)}.bench .mut{color:#b6c2ea}
+label.sl{display:flex;justify-content:space-between;font-weight:800;margin-top:8px}
+input[type=range]{width:100%;accent-color:var(--pink);height:26px}
+.eq{font-size:1.5rem;font-weight:900;text-align:center;margin:8px 0}
+.mood{text-align:center;font-weight:800;font-size:1.05rem;min-height:1.6em}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.seg{display:flex;gap:6px;background:#0b1535;padding:5px;border-radius:12px;border:2px solid #2a3d86;margin-bottom:10px}
+.seg button{flex:1;background:transparent;color:#d6defa;border:0;border-radius:8px;padding:7px 8px;font:inherit;font-size:.92rem;font-weight:800;cursor:pointer;transition:background .15s,color .15s}
+.seg button.on{background:var(--sun);color:var(--ink)}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;text-align:center}
+.statbox{background:#13245f;border:1.5px solid #2a3d86;border-radius:10px;padding:6px 4px;font-size:.86rem}
+.statbox b{display:block;color:var(--cyan);font-size:1.05rem}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border:2px solid var(--ink);padding:6px;text-align:center}th{background:var(--sun)}
+.tri{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:900;font-size:1.5rem}
+.tri div{display:flex;gap:10px}.tri button{width:66px;height:58px;border-radius:12px;border:2px solid var(--ink);background:#fff;box-shadow:3px 3px 0 var(--ink);font:inherit;font-weight:900;font-size:1.4rem;cursor:pointer}
+.tri button.cv{background:var(--sun)}
+.stepbox{background:#fff;border-left:4px solid var(--blue);padding:8px 12px;margin:6px 0;border-radius:0 8px 8px 0;font-size:.95rem}
+.stepbox b{color:var(--blue)}
+/* Pecahan vertikal (atas-bawah) */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15;font-weight:800}
+.frac>span:first-child{border-bottom:2px solid currentColor;padding:0 4px 2px}
+.frac>span:last-child{padding:2px 4px 0}
+.frac-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:6px 0}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:10px 12px;font:inherit;font-weight:600;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.opt:hover:not(:disabled){background:var(--soft)}.opt.ok{background:#bbf7d0}.opt.no{background:#fecdd3}
+.fb{font-weight:800;min-height:1.6em}
+textarea,.in{width:100%;border:2px solid var(--ink);border-radius:10px;padding:8px;font:inherit;background:#fff}
+details{background:var(--soft);border:2px solid var(--ink);border-radius:10px;padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:800}
+.qsim{background:#0b1535;color:#fff;border:2px solid var(--cyan);border-radius:14px;padding:12px;margin:10px 0 14px}
+.qsim-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;font-size:.9rem;font-weight:800;color:var(--sun)}
+.qsim-ctrl{background:#13245f;border-radius:10px;padding:8px 10px;margin-top:8px;border:1.5px solid #2a3d86}
+.qsim-ctrl label{font-size:.9rem;margin-top:4px}
+.qsim-read{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-around;margin-top:6px;font-weight:800;font-size:.92rem;color:var(--cyan)}
+.badge{display:inline-block;background:var(--soft);color:var(--ink);border:1.5px solid var(--ink);border-radius:99px;padding:1px 10px;font-size:.8rem;font-weight:800;margin-left:6px}
+.flow{animation:fl 1.2s linear infinite}@keyframes fl{to{stroke-dashoffset:-34}}
+footer{text-align:center;color:var(--mut);font-size:.85rem;padding:20px}
+@media print{header,footer,.noprint,.btn{display:none!important}body{background:#fff;font-size:12pt}main{padding:0}.card{box-shadow:none;border-color:#777}}
+button{position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+#pill{position:absolute;left:0;top:0;width:0;height:0;opacity:0;border-radius:99px;background:var(--sun);border:2px solid #fff;box-shadow:0 0 14px #ffd23f66;pointer-events:none;transition:transform .38s cubic-bezier(.34,1.35,.5,1),width .38s cubic-bezier(.34,1.35,.5,1),height .2s}
+#pill.snap{transition:none}
+#zap{position:absolute;left:0;bottom:-4px;width:90px;height:4px;border-radius:4px;background:linear-gradient(90deg,transparent,#fff 50%,transparent);box-shadow:0 0 10px 3px var(--cyan);opacity:0;pointer-events:none}
+nav button i{font-style:normal;display:inline-block;transition:transform .2s}
+.mis b{transition:transform .2s}
+@keyframes icpop{40%{transform:scale(1.4) rotate(-14deg)}}
+nav button.pop i{animation:icpop .4s}
+@media(hover:hover){nav button:hover i{transform:translateY(-2px) rotate(-10deg) scale(1.12)}.mis button:hover b{transform:scale(1.18) rotate(-6deg)}}
+nav button:active{transform:scale(.94)}
+.mis button{transition:transform .1s,box-shadow .1s}
+.mis button:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.tri button,.opt{transition:transform .08s,box-shadow .08s,background .15s}
+@media(hover:hover){.opt:hover:not(:disabled){transform:translateX(4px)}}
+.tri button:active,.opt:active:not(:disabled){transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.28;pointer-events:none;transform:scale(0);animation:rip .55s ease-out forwards}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.pg.out{opacity:0;transform:translateY(-6px);transition:opacity .14s ease-in,transform .14s ease-in}
+.pg.on>*{animation:rise .34s cubic-bezier(.2,.8,.3,1) backwards}
+.pg.on>:nth-child(2){animation-delay:.05s}.pg.on>:nth-child(3){animation-delay:.1s}.pg.on>:nth-child(4){animation-delay:.15s}.pg.on>:nth-child(n+5){animation-delay:.2s}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+.spark{position:fixed;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;pointer-events:none;z-index:50;animation:sp .5s ease-out forwards}
+@keyframes sp{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+.fly{position:fixed;left:0;top:0;z-index:60;pointer-events:none;font-size:22px;line-height:1;margin:-11px 0 0 -11px}
+.bump{animation:bump .3s}@keyframes bump{40%{transform:scale(1.12) rotate(-3deg)}}
+.shake{animation:shake .3s}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.btn::after{content:"";position:absolute;top:0;left:-70%;width:40%;height:100%;background:linear-gradient(100deg,transparent,#ffffff77,transparent);transform:skewX(-20deg);transition:left .55s;pointer-events:none}
+@media(hover:hover){.btn:hover::after{left:140%}}
+[hidden]{display:none!important}
+.cf{position:fixed;left:0;top:0;z-index:55;pointer-events:none}
+.ft{position:fixed;z-index:60;pointer-events:none;font-weight:900;color:var(--ink);background:var(--sun);border:2px solid var(--ink);border-radius:99px;padding:1px 10px;white-space:nowrap;font-size:.95rem}
+#toast{position:fixed;left:50%;top:112px;transform:translate(-50%,-14px) scale(.9);opacity:0;pointer-events:none;z-index:70;background:var(--ink);color:#fff;border:2px solid var(--sun);border-radius:14px;padding:8px 16px;font-weight:800;font-size:.95rem;line-height:1.35;box-shadow:4px 4px 0 var(--sun);text-align:center;width:max-content;max-width:92vw;transition:opacity .25s,transform .3s cubic-bezier(.3,1.4,.5,1)}
+#toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.streak{background:var(--pink);color:#fff;font-weight:900;border-radius:99px;padding:3px 10px;border:2px solid #fff;white-space:nowrap}
+.snd{background:#ffffff1f;border:2px solid #ffffff55;color:#fff;border-radius:99px;width:38px;height:30px;font-size:1rem;padding:0;cursor:pointer}
+#tb tr{transition:opacity .25s,transform .25s}
+#tb tr.new{animation:newrow 1s ease-out}@keyframes newrow{0%{background:#fde68a}100%{background:transparent}}
+#tb.clearing tr{opacity:0;transform:translateX(30px)}
+.ping{fill:none;stroke:#4ade80;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:ping .7s ease-out forwards}
+@keyframes ping{from{transform:scale(1);opacity:1}to{transform:scale(4.5);opacity:0}}
+.pbar{height:10px;background:var(--soft);border:2px solid var(--ink);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));border-radius:99px;transition:width .5s cubic-bezier(.3,1.2,.5,1)}
+.qin{animation:qin .3s ease-out}@keyframes qin{from{opacity:0;transform:translateX(24px)}}
+.opt.ok{animation:okp .5s}@keyframes okp{40%{transform:scale(1.04)}}
+.big{font-size:3.2rem;text-align:center;line-height:1.2;animation:bigp .6s cubic-bezier(.3,1.5,.5,1)}@keyframes bigp{from{transform:scale(0) rotate(-30deg)}}
+details[open]>:not(summary){animation:rise .3s ease-out}
+.kode{background:var(--soft);border:2px dashed var(--ink);border-radius:12px;padding:10px 12px;margin:14px 0}
+.kode textarea{font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;resize:none;word-break:break-all}
+a.btn{text-decoration:none}
+@media(prefers-reduced-motion:reduce){.flow,.stars.pop,.pg.on>*,.bump,.shake,nav button.pop i{animation:none}.qin,.opt.ok,.big,.ping,#tb tr.new,details[open]>:not(summary){animation:none}.spark,.fly,#zap,.rip,.cf,.ft,.btn::after{display:none}#pill,.pg.out,nav button i,.mis b,.pbar i,#tb tr{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="brand">⚡ OhmLab SMA</div><div class="streak" id="streak" hidden>🔥 0</div>
+<nav id="nav" aria-label="Menu utama"><span id="pill" aria-hidden="true"></span>
+<button data-p="beranda"><i>🏠</i> Beranda</button><button data-p="petunjuk"><i>📖</i> Petunjuk</button><button data-p="materi"><i>📚</i> Materi</button><button data-p="simulasi"><i>🔬</i> Simulasi</button><button data-p="tantangan"><i>🏆</i> Tantangan</button><button data-p="kuis"><i>✅</i> Kuis</button>
+</nav><div class="stars" id="stars" title="Bintang dari tantangan dan kuis">⭐ 0</div><button class="snd" id="snd" type="button" aria-pressed="false" title="Suara efek mati (tekan untuk menyalakan)">🔇</button></div><span id="zap" aria-hidden="true"></span></header>
+<main>
+
+<section id="beranda" class="pg">
+<div class="hero"><div><span class="chip">Fisika SMA · Hukum Ohm & Rangkaian</span>
+<h1>Kenapa lampu bisa redup?</h1><p>Eksplorasi Hukum Ohm pada rangkaian tunggal, seri, dan paralel. Atur tegangan serta dua hambatan untuk mengamati arus, pembagian tegangan, dan grafik V–I.</p>
+<div class="trio"><div><b>V</b><span>tegangan (volt)</span></div><div><b>I</b><span>kuat arus (ampere)</span></div><div><b>R</b><span>hambatan (ohm)</span></div></div>
+<button class="btn sun" data-go="simulasi">Mulai simulasi</button></div>
+<div class="demo"><svg viewBox="0 0 300 170" role="img" aria-label="Rangkaian mini: lampu makin terang saat tegangan dinaikkan"><defs><filter id="bl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<rect x="30" y="30" width="240" height="110" rx="10" fill="none" stroke="#22d3ee" stroke-width="3" opacity=".4"/>
+<rect id="hflow" class="flow" x="30" y="30" width="240" height="110" rx="10" fill="none" stroke="#ffd23f" stroke-width="4" stroke-dasharray="3 14" stroke-linecap="round"/>
+<rect x="18" y="64" width="24" height="42" fill="#13245f"/><path d="M20 74H40" stroke="#fff" stroke-width="4"/><path d="M26 92H34" stroke="#fff" stroke-width="4"/>
+<circle id="hhalo" cx="270" cy="85" r="28" fill="#ffd23f" filter="url(#bl)" opacity="0"/><circle cx="270" cy="85" r="18" fill="#0b1535" stroke="#fff" stroke-width="3"/><circle id="hlamp" cx="270" cy="85" r="16" fill="#ffd23f" opacity="0"/>
+<text x="150" y="92" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" id="hread"></text></svg>
+<label for="hv">Putar tegangan <span id="hvv"></span></label><input id="hv" type="range" min="0" max="12" step="0.5" value="6"><div class="mood" id="hmood"></div></div></div>
+<h2>Pilih misimu</h2>
+<div class="mis"><button data-go="materi"><b>📚</b>Baca materi</button><button data-go="simulasi"><b>🔬</b>Main simulasi</button><button data-go="tantangan"><b>🏆</b>Ambil tantangan</button><button data-go="kuis"><b>✅</b>Uji dirimu</button></div>
+<div class="card"><h2>Tujuan pembelajaran</h2><ol><li>Menjelaskan hubungan antara tegangan (V), kuat arus (I), dan hambatan (R) pada penghantar ohmik.</li><li>Menganalisis hambatan pengganti, arus cabang, dan tegangan jepit pada rangkaian seri maupun paralel.</li><li>Menafsirkan grafik V–I dari data percobaan simulasi.</li></ol></div>
+</section>
+
+<section id="petunjuk" class="pg"><h2>Petunjuk penggunaan</h2>
+<div class="card"><ol><li>Buka menu <b>Materi</b> untuk mempelajari konsep Hukum Ohm, rangkaian seri–paralel, serta contoh penyelesaian sistematis.</li><li>Buka <b>Simulasi</b>, pilih jenis rangkaian (<b>1 Hambatan</b>, <b>2 Hambatan Seri</b>, atau <b>2 Hambatan Paralel</b>), lalu geser slider V, R₁, dan R₂.</li><li>Amati perbedaan distribusi arus dan tegangan pada seri vs paralel, lalu tekan <b>Catat data</b> untuk mengisi tabel percobaan.</li><li>Uji kemampuan analisis pada menu <b>Tantangan</b> (tersedia rangkaian langsung untuk dianalisis) dan <b>Kuis</b> (10 soal HOTS SMA lengkap dengan mini-simulator di dalam soal).</li></ol></div>
+<div class="card"><b>Catatan fisis:</b> panah kuning menunjukkan arah arus konvensional (dari kutub positif ke negatif). Kecepatan gerak muatan sebanding dengan besar kuat arus di cabang tersebut.</div></section>
+
+<section id="materi" class="pg"><h2>Materi: Hukum Ohm & Rangkaian</h2>
+<div class="card"><p>Georg Simon Ohm merumuskan bahwa pada suhu tetap, kuat arus listrik (I) yang mengalir melalui suatu penghantar berbanding lurus dengan beda potensial/tegangan (V) dan berbanding terbalik dengan hambatannya (R).</p>
+<div class="eq">V = I × R</div>
+<div class="g2" style="margin-top:10px">
+<div style="background:var(--soft);padding:12px;border-radius:12px;border:2px solid var(--ink)"><b>1. Rangkaian Seri (Pembagi Tegangan)</b>
+<ul><li>Hambatan total: <b>R<sub>total</sub> = R₁ + R₂</b></li><li>Kuat arus sama di semua titik: <b>I<sub>total</sub> = I₁ = I₂</b></li><li>Tegangan terbagi: <b>V<sub>total</sub> = V₁ + V₂</b></li></ul></div>
+<div style="background:var(--soft);padding:12px;border-radius:12px;border:2px solid var(--ink)"><b>2. Rangkaian Paralel (Pembagi Arus)</b>
+<ul>
+<li>Hambatan total:
+  <div class="frac-row">
+    <span class="frac"><span>1</span><span>R<sub>total</sub></span></span>
+    <span>=</span>
+    <span class="frac"><span>1</span><span>R₁</span></span>
+    <span>+</span>
+    <span class="frac"><span>1</span><span>R₂</span></span>
+  </div>
+</li>
+<li>Tegangan tiap cabang sama: <b>V<sub>total</sub> = V₁ = V₂</b></li>
+<li>Arus terbagi: <b>I<sub>total</sub> = I₁ + I₂</b></li>
+</ul></div></div></div>
+
+<div class="g2"><div class="card"><h3>Segitiga rumus</h3><p class="mut">Tekan salah satu huruf untuk menutupnya, lalu lihat cara mencarinya.</p>
+<div class="tri"><button data-t="V">V</button><div><button data-t="I">I</button><button data-t="R">R</button></div><div id="triOut" class="eq" style="font-size:1.3rem">Pilih satu huruf</div></div></div>
+
+<div class="card"><h3>Contoh soal sistematis</h3>
+<p><b>Soal 1 (Hukum Ohm Dasar):</b> Sebuah resistor 20 Ω dihubungkan ke sumber tegangan 6 V. Tentukan kuat arus yang mengalir!</p>
+<details><summary>Lihat penyelesaian sistematis</summary>
+<div class="stepbox"><b>Diketahui:</b><br>Hambatan (R) = 20 Ω<br>Tegangan (V) = 6 V</div>
+<div class="stepbox"><b>Ditanya:</b><br>Kuat arus listrik (I) = ...?</div>
+<div class="stepbox"><b>Dijawab:</b>
+  <div class="frac-row"><span>I =</span><span class="frac"><span>V</span><span>R</span></span><span>=</span><span class="frac"><span>6 V</span><span>20 Ω</span></span><span>= <b>0,3 A</b></span></div>
+</div>
+</details>
+
+<p><b>Soal 2 (Rangkaian Seri):</b> Dua resistor R₁ = 10 Ω dan R₂ = 20 Ω disusun seri pada baterai 12 V. Hitung arus total dan tegangan pada R₂!</p>
+<details><summary>Lihat penyelesaian sistematis</summary>
+<div class="stepbox"><b>Diketahui:</b><br>R₁ = 10 Ω, R₂ = 20 Ω (susunan seri)<br>Tegangan sumber (V) = 12 V</div>
+<div class="stepbox"><b>Ditanya:</b><br>a) Kuat arus total (I<sub>total</sub>)<br>b) Tegangan pada R₂ (V₂)</div>
+<div class="stepbox"><b>Dijawab:</b><br>
+  a) R<sub>total</sub> = R₁ + R₂ = 10 + 20 = 30 Ω
+  <div class="frac-row"><span>I<sub>total</sub> =</span><span class="frac"><span>V</span><span>R<sub>total</sub></span></span><span>=</span><span class="frac"><span>12</span><span>30</span></span><span>= <b>0,4 A</b></span></div>
+  b) Pada rangkaian seri I₂ = I<sub>total</sub> = 0,4 A, maka:<br>
+  V₂ = I₂ × R₂ = 0,4 A × 20 Ω = <b>8 V</b>
+</div>
+</details>
+
+<p><b>Soal 3 (Rangkaian Paralel):</b> Resistor R₁ = 20 Ω dan R₂ = 60 Ω disusun paralel pada sumber 12 V. Tentukan hambatan pengganti dan kuat arus total!</p>
+<details><summary>Lihat penyelesaian sistematis</summary>
+<div class="stepbox"><b>Diketahui:</b><br>R₁ = 20 Ω, R₂ = 60 Ω (susunan paralel)<br>Tegangan sumber (V) = 12 V</div>
+<div class="stepbox"><b>Ditanya:</b><br>a) Hambatan pengganti (R<sub>total</sub>)<br>b) Kuat arus total (I<sub>total</sub>)</div>
+<div class="stepbox"><b>Dijawab:</b>
+  <div class="frac-row">
+    <span>a)</span>
+    <span class="frac"><span>1</span><span>R<sub>total</sub></span></span>
+    <span>=</span>
+    <span class="frac"><span>1</span><span>R₁</span></span>
+    <span>+</span>
+    <span class="frac"><span>1</span><span>R₂</span></span>
+    <span>=</span>
+    <span class="frac"><span>1</span><span>20</span></span>
+    <span>+</span>
+    <span class="frac"><span>1</span><span>60</span></span>
+    <span>=</span>
+    <span class="frac"><span>3 + 1</span><span>60</span></span>
+    <span>=</span>
+    <span class="frac"><span>4</span><span>60</span></span>
+  </div>
+  <div class="frac-row">
+    <span>R<sub>total</sub> =</span>
+    <span class="frac"><span>60</span><span>4</span></span>
+    <span>= <b>15 Ω</b></span>
+  </div>
+  <div class="frac-row">
+    <span>b) I<sub>total</sub> =</span>
+    <span class="frac"><span>V</span><span>R<sub>total</sub></span></span>
+    <span>=</span>
+    <span class="frac"><span>12</span><span>15</span></span>
+    <span>= <b>0,8 A</b></span>
+  </div>
+  <div class="frac-row" style="font-size:.88rem;color:var(--mut)">
+    <span><i>(Cek cabang: I₁ =</i></span>
+    <span class="frac"><span>12</span><span>20</span></span>
+    <span><i>= 0,6 A; I₂ =</i></span>
+    <span class="frac"><span>12</span><span>60</span></span>
+    <span><i>= 0,2 A → I₁ + I₂ = 0,8 A)</i></span>
+  </div>
+</div>
+</details></div></div>
+
+<h3>Miskonsepsi yang sering terjadi</h3>
+<div class="card"><ul><li><b>"Arus habis setelah melewati lampu pertama."</b> Salah — pada rangkaian seri, kuat arus sebelum lampu pertama, di antara dua lampu, dan setelah lampu kedua sama besar.</li><li><b>"Menambah resistor paralel memperbesar hambatan total."</b> Salah — menambah jalur paralel justru memperkecil hambatan total sehingga arus utama membesar.</li><li><b>"Mengubah hambatan satu cabang paralel mengubah arus cabang lain."</b> Salah — selama sumber tegangan ideal (V tetap), arus tiap cabang paralel hanya bergantung pada V dan hambatan cabang itu sendiri.</li></ul></div></section>
+
+<section id="simulasi" class="pg"><h2>Simulasi Rangkaian</h2>
+<div class="sim">
+<div class="card bench">
+<div class="seg" role="group" aria-label="Pilih jenis rangkaian">
+<button type="button" class="on" data-mode="single">1 Hambatan</button>
+<button type="button" class="series" data-mode="series">2 Hambatan Seri</button>
+<button type="button" class="parallel" data-mode="parallel">2 Hambatan Paralel</button>
+</div>
+<svg viewBox="0 0 420 250" id="simSvg" role="img" aria-label="Rangkaian listrik interaktif"><defs><filter id="bl2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="10"/></filter></defs>
+<g id="wireLayer"></g>
+<rect x="22" y="105" width="32" height="44" fill="#0f1b3d"/><path d="M25 118H51" stroke="#fff" stroke-width="4"/><path d="M33 134H43" stroke="#fff" stroke-width="4"/><text x="60" y="120" font-size="15" font-weight="800" fill="#fff">+</text><text x="60" y="142" font-size="15" font-weight="800" fill="#fff">−</text>
+<g id="compLayer"></g>
+<circle id="gh" cx="378" cy="127" r="32" fill="#ffd23f" filter="url(#bl2)" opacity="0"/><circle cx="378" cy="127" r="21" fill="#0f1b3d" stroke="#fff" stroke-width="3"/><circle id="gl" cx="378" cy="127" r="19" fill="#ffd23f" opacity="0"/><path d="M365 114L391 140M391 114L365 140" stroke="#0f1b3d" stroke-width="2" opacity=".5"/>
+<circle cx="210" cy="218" r="17" fill="#13245f" stroke="#fff" stroke-width="3"/><text x="210" y="224" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">A</text>
+<g id="el"></g>
+<text x="210" y="176" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff" id="rd1"></text>
+<text x="210" y="194" text-anchor="middle" font-size="13.5" font-weight="800" fill="#ffd23f" id="rd2"></text></svg>
+
+<label class="sl" for="sv">Tegangan Sumber (V) <span id="vv"></span></label><input id="sv" type="range" min="0" max="12" step="0.5" value="6">
+<label class="sl" for="sr1"><span id="lr1">Hambatan R₁</span> <span id="rv1"></span></label><input id="sr1" type="range" min="5" max="100" step="5" value="20">
+<div id="r2wrap" hidden>
+<label class="sl" for="sr2">Hambatan R₂ <span id="rv2"></span></label><input id="sr2" type="range" min="5" max="100" step="5" value="20">
+</div>
+
+<div class="statgrid" id="statGrid"></div>
+<div class="eq" id="fm" style="font-size:1.3rem"></div><div class="mood" id="mood"></div></div>
+
+<div class="card bench"><svg viewBox="0 0 300 245" id="gr" role="img" aria-label="Grafik tegangan terhadap kuat arus"></svg>
+<div class="row"><button class="btn" id="rec">Catat data</button><button class="btn alt" id="clr">Hapus data</button></div></div></div>
+<div class="card"><b>Tabel pengamatan</b> <span class="mut">(tahan susunan R, ubah V, lalu catat untuk melihat kelinieran grafik)</span>
+<table><thead><tr><th>No</th><th>Susunan</th><th>R<sub>total</sub> (Ω)</th><th>V (V)</th><th>I<sub>total</sub> (A)</th><th>V/I (Ω)</th></tr></thead><tbody id="tb"></tbody></table></div></section>
+
+<section id="tantangan" class="pg"><h2>Tantangan Analisis Rangkaian</h2>
+<div class="card" style="max-width:640px">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+<span class="chip" id="cBadge" style="transform:none">Level 1 · Seri</span>
+<button class="btn alt sm" id="cn">🎲 Ganti tipe tantangan</button>
+</div>
+<p id="cDesc" style="margin-top:4px;font-weight:700"></p>
+<div class="qsim" style="margin:10px 0">
+<svg viewBox="0 0 380 175" id="cSvg" role="img" aria-label="Diagram rangkaian tantangan"></svg>
+<div class="qsim-read" id="cLive"></div>
+</div>
+<div class="eq" id="cq" style="font-size:1.25rem"></div>
+<label class="sl" for="sc"><span id="cLabel">Atur Hambatan R₂</span> <span id="cr"></span></label>
+<input id="sc" type="range" min="5" max="100" step="5" value="30">
+<div class="row"><button class="btn" id="cc">Periksa Jawaban</button><button class="btn alt" id="cNext" hidden>Tantangan Berikutnya ➔</button></div>
+<p class="fb" id="cf" aria-live="polite"></p>
+</div></section>
+
+<section id="kuis" class="pg"><h2>Kuis</h2><div class="card" id="qz" style="max-width:720px"></div></section>
+
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>OhmLab SMA · Media Pembelajaran Fisika Interaktif</footer>
+<script>
+const KONFIG={
+ URL_REKAP:"https://script.google.com/macros/s/AKfycbxn3PdvAtDdUWN8oeLg2f5hPQ200EKnrZlOK7VD3_qPycL9-1KALieetM68m5IrCLi5/exec",
+ JUMLAH_SOAL:10,
+ WA_GURU:"",
+ KUNCI:"OhmLab-ganti-dengan-kalimat-rahasiamu"
+};
+
+const acak=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const pilih=a=>a[Math.random()*a.length|0];
+const fmtN=x=>(+x.toFixed(3)).toString().replace(".",",");
+const frac=(a,b)=>`<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+function angka(ok,bad,u){const key=x=>fmtN(x),seen=new Set([key(ok)]),out=[];
+ [...bad,ok*2,ok/2,ok*1.5,ok+5,ok+1].forEach(b=>{if(out.length<3&&isFinite(b)&&b>0&&!seen.has(key(b))){seen.add(key(b));out.push(b)}});
+ return{ok:fmtN(ok)+" "+u,bad:out.map(b=>fmtN(b)+" "+u)}}
+
+function gambarDiagram(cfg){
+ if(cfg.type==="series"){
+  return `<svg viewBox="0 0 380 165" role="img" aria-label="Diagram rangkaian seri">
+   <rect x="45" y="34" width="290" height="105" rx="6" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+   <rect x="33" y="70" width="24" height="34" fill="#0b1535"/>
+   <path d="M36 80H54" stroke="#fff" stroke-width="3.5"/><path d="M41 94H49" stroke="#fff" stroke-width="3.5"/>
+   <text x="64" y="88" fill="#ffd23f" font-size="13" font-weight="800">${cfg.V||"V"}</text>
+   <rect x="105" y="24" width="66" height="20" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="2.5"/>
+   <text x="138" y="17" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">${cfg.R1||"R₁"}</text>
+   <rect x="210" y="24" width="66" height="20" rx="3" fill="#13245f" stroke="#ff5d8f" stroke-width="2.5"/>
+   <text x="243" y="17" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">${cfg.R2||"R₂"}</text>
+   <circle cx="335" cy="86" r="16" fill="#13245f" stroke="#fff" stroke-width="2.5"/>
+   <text x="335" y="91" text-anchor="middle" fill="#ffd23f" font-size="13" font-weight="800">L</text>
+   <circle cx="190" cy="139" r="15" fill="#13245f" stroke="#22d3ee" stroke-width="2.5"/>
+   <text x="190" y="144" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">A</text>
+   <text x="190" y="92" text-anchor="middle" fill="#b6c2ea" font-size="12" font-weight="700">${cfg.note||"Rangkaian Seri"}</text>
+  </svg>`;
+ }
+ if(cfg.type==="parallel"){
+  return `<svg viewBox="0 0 380 185" role="img" aria-label="Diagram rangkaian paralel">
+   <path d="M45 92V35H125M255 35H335V92M45 92V150H335V92" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+   <path d="M125 35V16H155M225 16H255V35M125 35V62H155M225 62H255V35" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+   <rect x="33" y="75" width="24" height="34" fill="#0b1535"/>
+   <path d="M36 85H54" stroke="#fff" stroke-width="3.5"/><path d="M41 99H49" stroke="#fff" stroke-width="3.5"/>
+   <text x="64" y="94" fill="#ffd23f" font-size="13" font-weight="800">${cfg.V||"V"}</text>
+   <rect x="155" y="7" width="70" height="18" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="2.5"/>
+   <text x="190" y="39" text-anchor="middle" fill="#ffd23f" font-size="11.5" font-weight="800">${cfg.R1||"R₁"}</text>
+   <rect x="155" y="53" width="70" height="18" rx="3" fill="#13245f" stroke="#ff5d8f" stroke-width="2.5"/>
+   <text x="190" y="85" text-anchor="middle" fill="#ff5d8f" font-size="11.5" font-weight="800">${cfg.R2||"R₂"}</text>
+   <circle cx="335" cy="92" r="16" fill="#13245f" stroke="#fff" stroke-width="2.5"/>
+   <text x="335" y="97" text-anchor="middle" fill="#ffd23f" font-size="13" font-weight="800">L</text>
+   <circle cx="190" cy="150" r="15" fill="#13245f" stroke="#22d3ee" stroke-width="2.5"/>
+   <text x="190" y="155" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">A</text>
+   <text x="190" y="116" text-anchor="middle" fill="#b6c2ea" font-size="12" font-weight="700">${cfg.note||"Rangkaian Paralel"}</text>
+  </svg>`;
+ }
+ if(cfg.type==="switch"){
+  return `<svg viewBox="0 0 380 185" role="img" aria-label="Rangkaian campuran dengan sakelar">
+   <path d="M45 92V35H120M260 35H335V92M45 92V150H335V92" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+   <path d="M120 35V16H155M225 16H260V35M120 35V64H142M168 64H260V35" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+   <line x1="142" y1="64" x2="165" y2="50" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/>
+   <text x="152" y="82" text-anchor="middle" fill="#ffd23f" font-size="11.5" font-weight="800">Sakelar S</text>
+   <rect x="33" y="75" width="24" height="34" fill="#0b1535"/>
+   <path d="M36 85H54" stroke="#fff" stroke-width="3.5"/><path d="M41 99H49" stroke="#fff" stroke-width="3.5"/>
+   <text x="64" y="94" fill="#ffd23f" font-size="13" font-weight="800">V tetap</text>
+   <rect x="155" y="7" width="70" height="18" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="2.5"/>
+   <text x="190" y="38" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="800">Lampu 1 (R)</text>
+   <rect x="185" y="55" width="55" height="18" rx="3" fill="#13245f" stroke="#ff5d8f" stroke-width="2.5"/>
+   <text x="212" y="86" text-anchor="middle" fill="#ff5d8f" font-size="11.5" font-weight="800">Lampu 2 (R)</text>
+   <circle cx="335" cy="92" r="16" fill="#13245f" stroke="#fff" stroke-width="2.5"/>
+   <text x="335" y="97" text-anchor="middle" fill="#ffd23f" font-size="13" font-weight="800">L3</text>
+  </svg>`;
+ }
+ if(cfg.type==="graph"){
+  return `<svg viewBox="0 0 380 175" role="img" aria-label="Grafik V terhadap I dua penghantar">
+   <line x1="60" y1="145" x2="330" y2="145" stroke="#fff" stroke-width="2"/>
+   <line x1="60" y1="145" x2="60" y2="20" stroke="#fff" stroke-width="2"/>
+   <line x1="60" y1="145" x2="220" y2="25" stroke="#ffd23f" stroke-width="3"/>
+   <line x1="60" y1="145" x2="310" y2="75" stroke="#ff5d8f" stroke-width="3"/>
+   <text x="228" y="32" fill="#ffd23f" font-size="13" font-weight="800">Penghantar X</text>
+   <text x="312" y="70" fill="#ff5d8f" font-size="13" font-weight="800">Penghantar Y</text>
+   <text x="195" y="166" text-anchor="middle" fill="#b6c2ea" font-size="12" font-weight="700">Kuat Arus I (A)</text>
+   <text x="24" y="85" text-anchor="middle" fill="#b6c2ea" font-size="12" font-weight="700" transform="rotate(-90 24 85)">Tegangan V (V)</text>
+  </svg>`;
+ }
+ return `<svg viewBox="0 0 380 155" role="img" aria-label="Diagram rangkaian satu resistor">
+  <rect x="45" y="30" width="290" height="98" rx="6" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+  <rect x="33" y="62" width="24" height="34" fill="#0b1535"/>
+  <path d="M36 72H54" stroke="#fff" stroke-width="3.5"/><path d="M41 86H49" stroke="#fff" stroke-width="3.5"/>
+  <text x="64" y="82" fill="#ffd23f" font-size="13" font-weight="800">${cfg.V||"V"}</text>
+  <rect x="150" y="20" width="80" height="20" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="2.5"/>
+  <text x="190" y="14" text-anchor="middle" fill="#fff" font-size="12" font-weight="800">${cfg.R1||"R"}</text>
+  <circle cx="190" cy="128" r="15" fill="#13245f" stroke="#22d3ee" stroke-width="2.5"/>
+  <text x="190" y="133" text-anchor="middle" fill="#fff" font-size="13" font-weight="800">A</text>
+ </svg>`;
+}
+
+const GEN=[
+{id:"G1",t:"Analisis Seri",label:"Analisis pembagian tegangan pada rangkaian seri (angka acak)",gen:()=>{
+ const R1=pilih([10,20,30]),R2=pilih([20,30,40,60]),I=pilih([.2,.3,.4,.5]),V=I*(R1+R2),V2=I*R2;
+ const o=angka(V2,[V,I*R1,V/2],"V");
+ return{
+  q:`Perhatikan rangkaian seri di bawah. Jika sumber tegangan V = ${fmtN(V)} V, R₁ = ${R1} Ω, dan R₂ = ${R2} Ω, berapa tegangan jepit pada hambatan R₂?`,
+  ok:o.ok,bad:o.bad,
+  e:`R<sub>total</sub> = R₁ + R₂ = ${R1+R2} Ω. Kuat arus seri I = ${frac("V","R<sub>total</sub>")} = ${frac(fmtN(V),R1+R2)} = ${fmtN(I)} A. Maka tegangan pada R₂ adalah V₂ = I × R₂ = ${fmtN(I)} × ${R2} = <b>${fmtN(V2)} V</b>.`,
+  diag:{type:"series",V:fmtN(V)+" V",R1:"R₁ = "+R1+" Ω",R2:"R₂ = "+R2+" Ω",note:"Uji di mini-simulator di bawah!"},
+  sim:{mode:"series",v:V,r1:R1,r2:R2}
+ }}},
+{id:"G2",t:"Analisis Paralel",label:"Menghitung arus cabang pada rangkaian paralel (angka acak)",gen:()=>{
+ const R1=pilih([10,20,30]),R2=pilih([20,30,60]),V=pilih([6,12,18]),I1=V/R1,I2=V/R2,Itot=I1+I2;
+ const o=angka(Itot,[I1,I2,V/(R1+R2)],"A");
+ return{
+  q:`Dua hambatan R₁ = ${R1} Ω dan R₂ = ${R2} Ω dirangkai paralel pada sumber tegangan ${V} V seperti gambar. Berapa kuat arus total yang terbaca pada amperemeter A?`,
+  ok:o.ok,bad:o.bad,
+  e:`Pada rangkaian paralel, V₁ = V₂ = ${V} V. Arus cabang I₁ = ${frac(V,R1)} = ${fmtN(I1)} A dan I₂ = ${frac(V,R2)} = ${fmtN(I2)} A. Jadi I<sub>total</sub> = I₁ + I₂ = <b>${fmtN(Itot)} A</b>.`,
+  diag:{type:"parallel",V:V+" V",R1:"R₁ = "+R1+" Ω",R2:"R₂ = "+R2+" Ω",note:"Simulasikan rangkaian paralel ini!"},
+  sim:{mode:"parallel",v:V,r1:R1,r2:R2}
+ }}},
+{id:"G3",t:"Sintesis Rangkaian",label:"Menentukan R₂ agar tercapai arus target pada seri (angka acak)",gen:()=>{
+ const R1=pilih([10,15,20,25]),R2=pilih([15,20,30,40]),I=pilih([.2,.25,.4,.5]),V=I*(R1+R2);
+ const o=angka(R2,[R1+R2,V/I,R1],"Ω");
+ return{
+  q:`Sebuah rangkaian seri menggunakan sumber ${fmtN(V)} V dan resistor tetap R₁ = ${R1} Ω. Agar amperemeter menunjukkan arus tepat ${fmtN(I)} A, berapa nilai resistor R₂ yang harus dipasang?`,
+  ok:o.ok,bad:o.bad,
+  e:`Hambatan total yang dibutuhkan R<sub>total</sub> = ${frac("V","I")} = ${frac(fmtN(V),fmtN(I))} = ${R1+R2} Ω. Karena disusun seri, R₂ = R<sub>total</sub> − R₁ = ${R1+R2} − ${R1} = <b>${R2} Ω</b>.`,
+  diag:{type:"series",V:fmtN(V)+" V",R1:"R₁ = "+R1+" Ω",R2:"R₂ = ?",note:"Geser R₂ pada simulator hingga I = "+fmtN(I)+" A"},
+  sim:{mode:"series",v:V,r1:R1,r2:10}
+ }}},
+{id:"G4",t:"Perbandingan HOTS",label:"Perbandingan arus total seri vs paralel pada dua resistor identik",gen:()=>{
+ const R=pilih([10,20,30,40]),V=pilih([6,12,24]);
+ return{
+  q:`Dua buah resistor identik masing-masing ${R} Ω mula-mula disusun SERI pada baterai ${V} V, lalu diubah menjadi susunan PARALEL pada baterai yang sama. Perbandingan kuat arus total saat seri terhadap saat paralel (I<sub>seri</sub> : I<sub>paralel</sub>) adalah ...`,
+  ok:"1 : 4",bad:["1 : 2","2 : 1","4 : 1"],
+  e:`Saat seri: R<sub>s</sub> = 2R = ${2*R} Ω → I<sub>s</sub> = ${frac("V","2R")}. Saat paralel: ${frac("1","R<sub>p</sub>")} = ${frac("1","R")} + ${frac("1","R")} = ${frac("2","R")} → R<sub>p</sub> = ${frac("R","2")} = ${R/2} Ω → I<sub>p</sub> = ${frac("2V","R")}. Perbandingan I<sub>s</sub> : I<sub>p</sub> = <b>1 : 4</b>.`,
+  diag:{type:"parallel",V:V+" V",R1:"R₁ = "+R+" Ω",R2:"R₂ = "+R+" Ω",note:"Bandingkan mode Seri vs Paralel di simulator!"},
+  sim:{mode:"series",v:V,r1:R,r2:R}
+ }}},
+{id:"G5",t:"Analisis Cabang",label:"Dampak perubahan R₂ terhadap arus cabang R₁ pada paralel",gen:()=>{
+ const R1=pilih([10,20]),V=pilih([6,12]);
+ return{
+  q:`Pada rangkaian paralel di bawah (V = ${V} V tetap, R₁ = ${R1} Ω), hambatan R₂ diperbesar dari 20 Ω menjadi 80 Ω. Bagaimana pengaruhnya terhadap kuat arus di cabang R₁ (I₁) dan kuat arus total (I<sub>total</sub>)?`,
+  ok:"I₁ tetap, sedangkan I_total mengecil",bad:["I₁ membesar dan I_total mengecil","I₁ mengecil dan I_total tetap","I₁ dan I_total sama-sama membesar"],
+  e:`Karena sumber tegangan ideal (V = ${V} V konstan), I₁ = ${frac("V","R₁")} tetap bernilai ${fmtN(V/R1)} A. Namun memperbesar R₂ memperkecil arus cabang I₂, sehingga I<sub>total</sub> = I₁ + I₂ ikut mengecil.`,
+  diag:{type:"parallel",V:V+" V",R1:"R₁ = "+R1+" Ω",R2:"R₂ diubah",note:"Buktikan dengan menggeser R₂ di mini-simulator!"},
+  sim:{mode:"parallel",v:V,r1:R1,r2:20}
+ }}}
+];
+
+const TETAP=[
+["K01","Analisis Sakelar","Perhatikan rangkaian lampu identik di samping. Mula-mula sakelar S terbuka sehingga hanya Lampu 1 dan L3 yang menyala seri. Jika sakelar S ditutup, apa yang terjadi pada nyala Lampu 1 dan Lampu L3?","Lampu 1 meredup, sedangkan Lampu L3 semakin terang","Lampu 1 dan L3 sama-sama meredup","Lampu 1 tetap terangnya, Lampu L3 meredup","Lampu 1 padam karena arus lewat sakelar S","Ketika S ditutup, Lampu 1 terhubung paralel dengan Lampu 2 sehingga hambatan total rangkaian mengecil dan arus utama (yang melewati L3) membesar (L3 makin terang). Arus utama terbagi dua ke Lampu 1 dan 2, sehingga arus di Lampu 1 berkurang dan meredup.",{type:"switch"}],
+["K02","Interpretasi Grafik","Berdasarkan grafik hubungan tegangan (V) terhadap kuat arus (I) pada dua penghantar logam X dan Y di bawah, kesimpulan fisis yang paling tepat adalah ...","hambatan penghantar X lebih besar daripada penghantar Y","hambatan penghantar Y lebih besar daripada penghantar X","penghantar Y tidak mematuhi Hukum Ohm","pada tegangan yang sama, arus di X lebih besar daripada di Y",`Pada grafik V terhadap I (V sumbu tegak, I sumbu datar), kemiringan garis menyatakan R = ${frac("V","I")}. Garis X lebih curam daripada Y, artinya R<sub>X</sub> > R<sub>Y</sub>.`,{type:"graph"}],
+["K03","Evaluasi Rangkaian","Seorang siswa merangkai R₁ = 10 Ω dan R₂ = 40 Ω secara paralel pada baterai 8 V. Ia menyimpulkan bahwa tegangan pada R₂ lebih besar daripada R₁ karena hambatannya lebih besar. Evaluasi pernyataan tersebut!","Salah, karena pada rangkaian paralel beda potensial kedua cabang sama besar (8 V)","Benar, karena hambatan besar membutuhkan tegangan lebih besar","Benar, karena arus lebih banyak mengalir ke R₂","Salah, karena tegangan hanya ada pada R₁ saja","Sifat utama rangkaian paralel adalah beda potensial (tegangan) di setiap cabang sama dengan tegangan sumber, yaitu 8 V.",{type:"parallel",V:"8 V",R1:"R₁ = 10 Ω",R2:"R₂ = 40 Ω"},{mode:"parallel",v:8,r1:10,r2:40}],
+["K04","Desain Pengukuran","Untuk mengukur tegangan jepit pada resistor R₂ sekaligus kuat arus yang melewati R₂ dalam rangkaian seri, pemasangan voltmeter (V) dan amperemeter (A) yang benar adalah ...","V dipasang paralel dengan R₂, dan A dipasang seri dengan R₂","V dipasang seri dengan R₂, dan A dipasang paralel dengan R₂","V dan A keduanya dipasang paralel dengan R₂","V dan A keduanya dipasang seri sebelum R₁","Voltmeter memiliki hambatan dalam sangat besar sehingga harus dipasang paralel terhadap komponen yang diukur tegangannya, sedangkan amperemeter dipasang seri agar arus melewatinya.",{type:"series",V:"V",R1:"R₁",R2:"R₂"}],
+["K05","Analisis Daya Lampu","Dua lampu pijar bertuliskan L₁ (12 V, 24 W) dan L₂ (12 V, 12 W) dihubungkan secara SERI pada sumber tegangan 12 V. Lampu manakah yang menyala lebih terang?","Lampu L₂, karena hambatannya lebih besar sehingga menyerap tegangan dan daya lebih besar saat seri","Lampu L₁, karena spesifikasi dayanya 24 W lebih besar","Keduanya menyala sama terang karena arusnya sama","Lampu L₁ padam karena kekurangan tegangan",`Dari P = ${frac("V²","R")}, hambatan L₁ = ${frac("144","24")} = 6 Ω dan L₂ = ${frac("144","12")} = 12 Ω. Saat dipasang seri, kuat arus I sama pada keduanya, sehingga daya disipasi P = I²·R lebih besar pada hambatan yang lebih besar (L₂).`,{type:"series",V:"12 V",R1:"L₁ (6 Ω)",R2:"L₂ (12 Ω)"},{mode:"series",v:12,r1:5,r2:10}],
+["K06","GGL & Hambatan Dalam","Sebuah baterai dengan GGL 12 V dan hambatan dalam r = 2 Ω dihubungkan dengan resistor luar R = 10 Ω. Berapa tegangan jepit pada ujung-ujung resistor R?","10 V","12 V","2 V","6 V",`Kuat arus rangkaian I = ${frac("ε","R + r")} = ${frac("12","10 + 2")} = 1 A. Tegangan jepit V<sub>jepit</sub> = I × R = 1 A × 10 Ω = <b>10 V</b> (2 V hilang pada hambatan dalam baterai).`,{type:"single",V:"ε = 12 V, r = 2 Ω",R1:"R = 10 Ω"}],
+["K07","Analisis Rangkaian","Tiga resistor masing-masing 30 Ω disusun paralel, kemudian dihubungkan seri dengan sebuah resistor 10 Ω pada sumber 20 V. Kuat arus yang mengalir melalui resistor 10 Ω adalah ...","1,0 A","0,5 A","2,0 A","0,2 A",`Hambatan pengganti tiga resistor paralel: ${frac("1","R<sub>p</sub>")} = ${frac("1","30")} + ${frac("1","30")} + ${frac("1","30")} = ${frac("3","30")} → R<sub>p</sub> = 10 Ω. Hambatan total R<sub>total</sub> = R<sub>p</sub> + 10 = 20 Ω. Maka I = ${frac("20 V","20 Ω")} = <b>1,0 A</b>.`,{type:"series",V:"20 V",R1:"R_p = 10 Ω",R2:"R = 10 Ω"},{mode:"series",v:12,r1:10,r2:10}],
+["K08","Keamanan Listrik","Mengapa pemasangan terlalu banyak peralatan listrik berdaya tinggi pada satu stopkontak cabang (paralel) dapat memicu kabel panas dan korsleting?","Hambatan total rangkaian paralel makin kecil sehingga kuat arus utama dari sumber melonjak besar","Tegangan listrik PLN meningkat drastis setiap kali alat ditambah","Hambatan total rangkaian menjadi sangat besar sehingga arus tertahan","Arus listrik terbagi habis sehingga peralatan tidak mendapat tegangan","Setiap alat yang dipasang paralel menambah jalur arus sehingga hambatan ekuivalen makin kecil dan arus utama I<sub>total</sub> = I₁ + I₂ + ... meningkat melebihi kapasitas hantar kabel.",{type:"parallel",V:"220 V",R1:"Alat 1",R2:"Alat 2"}]
+];
+
+const INFO={};
+GEN.forEach(g=>INFO[g.id]={t:g.t,teks:g.label});
+TETAP.forEach(s=>INFO[s[0]]={t:s[1],teks:s[2]});
+
+function buatSoal(n){
+ const nG=Math.min(GEN.length,5),nT=Math.min(TETAP.length,n-nG),out=[];
+ acak(GEN).slice(0,nG).forEach(g=>{const x=g.gen(),o=acak([x.ok,...[...new Set(x.bad.filter(b=>b!==x.ok))].slice(0,3)]);out.push({id:g.id,t:g.t,q:x.q,o,a:o.indexOf(x.ok),e:x.e,diag:x.diag,sim:x.sim})});
+ acak(TETAP).slice(0,nT).forEach(s=>{const o=acak(s.slice(3,7));out.push({id:s[0],t:s[1],q:s[2],o,a:o.indexOf(s[3]),e:s[7],diag:s[8]||null,sim:s[9]||null})});
+ return acak(out)}
+
+function hsh(s){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
+ h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+ return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+function b64u(s){let r="";new TextEncoder().encode(s).forEach(x=>r+=String.fromCharCode(x));return btoa(r).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function buatKode(d){const bersih=x=>String(x).replace(/[|,<>]/g," ").trim();
+ const isi=[bersih(d.n),bersih(d.k),d.t,d.s,d.m,d.d,d.p,d.q.map(x=>x[0]+":"+x[1]).join(",")].join("|");
+ return"OHM1."+b64u(isi)+"."+hsh(isi+KONFIG.KUNCI)}
+async function kirimHasil(kode){const c=new AbortController(),tm=setTimeout(()=>c.abort(),20000);
+ try{const r=await fetch(KONFIG.URL_REKAP,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({aksi:"kirim",kode}),signal:c.signal});
+  const j=await r.json();if(!j.ok)throw new Error(j.galat||"gagal");return j}finally{clearTimeout(tm)}}
+
+const $=id=>document.getElementById(id),f3=x=>x.toFixed(3).replace(".",","),f1=x=>x.toFixed(1).replace(".",",");
+let mode="single",V=6,R1=20,R2=20,Rtot=20,I=0.3,I1=0.3,I2=0,V1=6,V2=0,pts=[],cur="beranda";
+
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function burst(x,y,n){if(reduce)return;const c=["#ffd23f","#22d3ee","#ff5d8f"];
+ for(let i=0;i<n;i++){const d=document.createElement("div"),a=i/n*6.283+Math.random()*.5,r=24+Math.random()*24;
+  d.className="spark";d.style.left=x+"px";d.style.top=y+"px";d.style.background=c[i%3];
+  d.style.setProperty("--dx",Math.cos(a)*r+"px");d.style.setProperty("--dy",Math.sin(a)*r+"px");
+  document.body.appendChild(d);setTimeout(()=>d.remove(),600)}}
+function fx(el,n){const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,n);
+ el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
+function bumpEl(e){e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")}
+function shakeEl(e){e.classList.remove("shake");void e.offsetWidth;e.classList.add("shake")}
+function ctr(el){const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2]}
+function confetti(x,y,n){if(reduce)return;const c=["#ffd23f","#22d3ee","#ff5d8f","#2f5bff","#4ade80","#c4b5fd"];
+ for(let i=0;i<n;i++){const d=document.createElement("div"),w=6+Math.random()*6,dx=(Math.random()-.5)*340,up=70+Math.random()*130,fall=120+Math.random()*180,rot=(Math.random()-.5)*900;
+  d.className="cf";d.style.cssText="width:"+w+"px;height:"+(w*(Math.random()<.5?1:.5))+"px;background:"+c[i%c.length]+";border-radius:"+(Math.random()<.3?"50%":"2px");
+  document.body.appendChild(d);
+  d.animate([{transform:"translate("+x+"px,"+y+"px) rotate(0deg)",opacity:1},{transform:"translate("+(x+dx*.55)+"px,"+(y-up)+"px) rotate("+rot*.4+"deg)",opacity:1,offset:.35},{transform:"translate("+(x+dx)+"px,"+(y+fall)+"px) rotate("+rot+"deg)",opacity:0}],{duration:900+Math.random()*500,easing:"cubic-bezier(.2,.7,.4,1)"}).onfinish=()=>d.remove()}}
+function floatText(el,t){if(reduce)return;const p=ctr(el),d=document.createElement("div");d.className="ft";d.textContent=t;d.style.left=p[0]+"px";d.style.top=(p[1]-30)+"px";document.body.appendChild(d);
+ d.animate([{transform:"translate(-50%,0) scale(.7)",opacity:0},{transform:"translate(-50%,-22px) scale(1.1)",opacity:1,offset:.25},{transform:"translate(-50%,-56px) scale(1)",opacity:0}],{duration:900,easing:"ease-out"}).onfinish=()=>d.remove()}
+function cheer(el){const p=ctr(el);confetti(p[0],p[1],26);floatText(el,["Mantap! 🎯","Keren! 🔥","Tepat sekali! ✨","Analisis jitu! 💡"][Math.random()*4|0])}
+let tt;function toast(m){const e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),2600)}
+let streak=0;
+function hit(ok){streak=ok?streak+1:0;const e=$("streak");e.hidden=streak<2;e.textContent="🔥 "+streak;if(streak>=2)bumpEl(e);if([3,5,7,10].includes(streak))toast("🔥 "+streak+" benar beruntun!")}
+
+let snd=false,ac;try{snd=localStorage.getItem("ohmSnd")==="1"}catch(e){}
+function note(f,t,d,ty,g){const o=ac.createOscillator(),v=ac.createGain(),a=ac.currentTime+t;o.type=ty;o.frequency.value=f;o.connect(v);v.connect(ac.destination);
+ v.gain.setValueAtTime(0,a);v.gain.linearRampToValueAtTime(g,a+.01);v.gain.exponentialRampToValueAtTime(.0001,a+d);o.start(a);o.stop(a+d+.02)}
+function sfx(k){if(!snd)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
+ if(k==="tap")note(520,0,.05,"sine",.05);else if(k==="rec")note(700,0,.08,"triangle",.08);else if(k==="no")note(150,0,.22,"sawtooth",.05);
+ else if(k==="ok")[523,659,784].forEach((f,i)=>note(f,i*.09,.16,"triangle",.1));else if(k==="up")[523,659,784,1047].forEach((f,i)=>note(f,i*.1,.2,"triangle",.1))}catch(e){}}
+function syncSnd(){const e=$("snd");e.textContent=snd?"🔊":"🔇";e.setAttribute("aria-pressed",snd);e.title=snd?"Suara efek menyala":"Suara efek mati"}
+$("snd").onclick=()=>{snd=!snd;try{localStorage.setItem("ohmSnd",snd?"1":"0")}catch(e){}syncSnd();if(snd)sfx("ok")};syncSnd();
+function setMood(id,t){const e=$(id);if(e.textContent===t)return;const first=!e.dataset.s;e.textContent=t;e.dataset.s=1;if(first)return;bumpEl(e);
+ if(id==="mood"&&/banget/.test(t)){const p=ctr($("gl"));burst(p[0],p[1],10);sfx("rec")}}
+
+let ready=false,tm;
+function show(p,u=true){if(!document.getElementById(p))p="beranda";cur=p;
+ document.querySelectorAll(".pg").forEach(s=>{s.classList.remove("out");s.classList.toggle("on",s.id===p)});
+ document.querySelectorAll("#nav button").forEach(b=>{const on=b.dataset.p===p;b.classList.toggle("on",on);if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ place(false);
+ try{if(u&&location.hash!=="#"+p)history.replaceState(null,"","#"+p)}catch(e){}window.scrollTo(0,0);}
+function place(snap){const b=document.querySelector("#nav button.on"),p=$("pill"),n=$("nav");if(!b)return;
+ const now=snap||!ready;if(now)p.classList.add("snap");
+ p.style.width=b.offsetWidth+"px";p.style.height=b.offsetHeight+"px";p.style.transform="translate("+b.offsetLeft+"px,"+b.offsetTop+"px)";p.style.opacity=1;
+ if(now){void p.offsetWidth;p.classList.remove("snap");ready=true}
+ if(n.scrollWidth>n.clientWidth)n.scrollTo({left:b.offsetLeft-(n.clientWidth-b.offsetWidth)/2,behavior:now||reduce?"auto":"smooth"})}
+function pop(b){b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop")}
+function zapTo(a,b){const z=$("zap"),h=z.parentNode.getBoundingClientRect(),ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect(),w=90,
+ x0=ra.left+ra.width/2-h.left-w/2,x1=rb.left+rb.width/2-h.left-w/2;
+ z.animate([{transform:"translateX("+x0+"px)",opacity:0},{opacity:1,offset:.2},{opacity:1,offset:.75},{transform:"translateX("+x1+"px)",opacity:0}],{duration:420,easing:"cubic-bezier(.3,.7,.3,1)"})}
+function go(p){if(!$(p))return;clearTimeout(tm);
+ const old=document.querySelector("#nav button.on"),nb=document.querySelector('#nav button[data-p="'+p+'"]');
+ if(p===cur||reduce){show(p);if(nb&&!reduce)pop(nb);return}
+ $(cur).classList.add("out");
+ if(old&&nb)zapTo(old,nb);
+ document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b===nb));
+ place(false);if(nb)pop(nb);
+ tm=setTimeout(()=>show(p),150)}
+document.addEventListener("pointerdown",e=>{const b=e.target.closest&&e.target.closest("button");if(!b||b.disabled)return;sfx("tap");if(reduce)return;
+ const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2.2,s=document.createElement("span");
+ s.className="rip";s.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";
+ b.appendChild(s);setTimeout(()=>s.remove(),600)});
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.p));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{fx(b,8);go(b.dataset.go)});
+window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+window.addEventListener("resize",()=>place(true));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>place(true));
+
+const tri={V:"V = I × R",I:`I = ${frac("V","R")}`,R:`R = ${frac("V","I")}`};
+document.querySelectorAll(".tri button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tri button").forEach(x=>{x.classList.toggle("cv",x===b);x.firstChild.nodeValue=x===b?"?":x.dataset.t});$("triOut").innerHTML=tri[b.dataset.t];bumpEl($("triOut"));fx(b,6)});
+
+const NS="http://www.w3.org/2000/svg",dots=[];
+for(let k=0;k<30;k++){const c=document.createElementNS(NS,"circle");c.setAttribute("r","3.5");c.setAttribute("fill","#ffd23f");$("el").appendChild(c);dots.push(c)}
+
+function renderRangkaianSVG(){
+ const w=$("wireLayer"),c=$("compLayer");
+ if(mode==="single"){
+  w.innerHTML=`<rect x="38" y="45" width="340" height="173" rx="6" fill="none" stroke="#22d3ee" stroke-width="3"/>
+   <path d="M158 45V102H186M230 102H258V45" fill="none" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="4 3"/>`;
+  c.innerHTML=`<rect x="168" y="35" width="80" height="20" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="3"/>
+   <text x="208" y="25" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff" id="rt1"></text>
+   <circle cx="208" cy="102" r="17" fill="#13245f" stroke="#fff" stroke-width="3"/><text x="208" y="108" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">V</text>`;
+ }else if(mode==="series"){
+  w.innerHTML=`<rect x="38" y="45" width="340" height="173" rx="6" fill="none" stroke="#22d3ee" stroke-width="3"/>`;
+  c.innerHTML=`<rect x="102" y="35" width="76" height="20" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="3"/>
+   <text x="140" y="25" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd23f" id="rt1"></text>
+   <text x="140" y="72" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" id="vt1"></text>
+   <rect x="232" y="35" width="76" height="20" rx="3" fill="#13245f" stroke="#ff5d8f" stroke-width="3"/>
+   <text x="270" y="25" text-anchor="middle" font-size="13" font-weight="800" fill="#ff5d8f" id="rt2"></text>
+   <text x="270" y="72" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" id="vt2"></text>`;
+ }else{
+  w.innerHTML=`<path d="M38 127V45H122M294 45H378V127M38 127V218H378V127" fill="none" stroke="#22d3ee" stroke-width="3"/>
+   <path d="M122 45V22H165M251 22H294V45M122 45V78H165M251 78H294V45" fill="none" stroke="#22d3ee" stroke-width="3"/>`;
+  c.innerHTML=`<rect x="165" y="12" width="86" height="20" rx="3" fill="#13245f" stroke="#ffd23f" stroke-width="3"/>
+   <text x="208" y="46" text-anchor="middle" font-size="12" font-weight="800" fill="#ffd23f" id="rt1"></text>
+   <rect x="165" y="68" width="86" height="20" rx="3" fill="#13245f" stroke="#ff5d8f" stroke-width="3"/>
+   <text x="208" y="103" text-anchor="middle" font-size="12" font-weight="800" fill="#ff5d8f" id="rt2"></text>`;
+ }
+}
+
+function posMain(t){
+ const p=((t%1)+1)%1*1026;
+ if(p<340)return[38+p,45];
+ if(p<513)return[378,45+p-340];
+ if(p<853)return[378-(p-513),218];
+ return[38,218-(p-853)];
+}
+function posBranch(t,y){
+ const p=((t%1)+1)%1*172;
+ return[122+p,y];
+}
+
+let ph=0,ph1=0,ph2=0,last=0;
+function loop(ts){
+ const dt=Math.min(ts-last,50)/1000;last=ts;
+ if(cur==="simulasi"){
+  ph+=dt*I*.45;ph1+=dt*I1*.55;ph2+=dt*I2*.55;
+  dots.forEach((c,k)=>{
+   if(mode!=="parallel"){
+    const q=posMain(k/dots.length+ph);
+    c.setAttribute("cx",q[0]);c.setAttribute("cy",q[1]);c.setAttribute("fill","#ffd23f");c.setAttribute("opacity",I>0?1:0);
+   }else{
+    if(k<18){
+     let q=posMain(k/18+ph);
+     if(q[1]===45&&q[0]>122&&q[0]<294)c.setAttribute("opacity",0);
+     else{c.setAttribute("cx",q[0]);c.setAttribute("cy",q[1]);c.setAttribute("fill","#ffd23f");c.setAttribute("opacity",I>0?1:0)}
+    }else if(k<24){
+     const q=posBranch((k-18)/6+ph1,22);
+     c.setAttribute("cx",q[0]);c.setAttribute("cy",q[1]);c.setAttribute("fill","#ffd23f");c.setAttribute("opacity",I1>0?1:0);
+    }else{
+     const q=posBranch((k-24)/6+ph2,78);
+     c.setAttribute("cx",q[0]);c.setAttribute("cy",q[1]);c.setAttribute("fill","#ff5d8f");c.setAttribute("opacity",I2>0?1:0);
+    }
+   }
+  });
+ }
+ requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function upd(){
+ if(mode==="single"){
+  Rtot=R1;I=V/Rtot;I1=I;I2=0;V1=V;V2=0;
+  $("lr1").textContent="Hambatan R";$("r2wrap").hidden=true;
+ }else if(mode==="series"){
+  Rtot=R1+R2;I=V/Rtot;I1=I;I2=I;V1=I*R1;V2=I*R2;
+  $("lr1").textContent="Hambatan R₁";$("r2wrap").hidden=false;
+ }else{
+  Rtot=(R1*R2)/(R1+R2);I1=V/R1;I2=V/R2;I=I1+I2;V1=V;V2=V;
+  $("lr1").textContent="Hambatan R₁";$("r2wrap").hidden=false;
+ }
+ $("vv").textContent=f1(V)+" V";$("rv1").textContent=R1+" Ω";$("rv2").textContent=R2+" Ω";
+ if($("rt1"))$("rt1").textContent=(mode==="single"?"R = ":"R₁ = ")+R1+" Ω";
+ if($("rt2"))$("rt2").textContent="R₂ = "+R2+" Ω";
+ if($("vt1"))$("vt1").textContent="V₁ = "+f1(V1)+" V";
+ if($("vt2"))$("vt2").textContent="V₂ = "+f1(V2)+" V";
+
+ $("rd1").textContent="V = "+f1(V)+" V  ·  R_total = "+fmtN(Rtot)+" Ω";
+ $("rd2").textContent="I_total = "+f3(I)+" A";
+
+ const sg=$("statGrid");
+ if(mode==="single"){
+  sg.innerHTML=`<div class="statbox">R Total<b>${fmtN(Rtot)} Ω</b></div><div class="statbox">Tegangan V<b>${f1(V)} V</b></div><div class="statbox">Arus I<b>${f3(I)} A</b></div>`;
+ }else if(mode==="series"){
+  sg.innerHTML=`<div class="statbox">R_total = R₁+R₂<b>${fmtN(Rtot)} Ω</b></div><div class="statbox">V₁ / V₂<b>${f1(V1)}V / ${f1(V2)}V</b></div><div class="statbox">I₁ = I₂ = I<b>${f3(I)} A</b></div>`;
+ }else{
+  sg.innerHTML=`<div class="statbox">R_total (Paralel)<b>${fmtN(Rtot)} Ω</b></div><div class="statbox">I₁ / I₂<b>${f3(I1)}A / ${f3(I2)}A</b></div><div class="statbox">I_total = I₁+I₂<b>${f3(I)} A</b></div>`;
+ }
+
+ const L=Math.min(1,I/.6);$("gl").setAttribute("opacity",L);$("gh").setAttribute("opacity",L*.9);
+ setMood("mood",I<.05?"Lampu padam 😴":I<.2?"Lampu redup 🙂":I<.4?"Lampu menyala 😀":I<.6?"Terang! 😎":"Terang banget! 🤩");
+ $("fm").textContent=f1(V)+" V = "+f3(I)+" A × "+fmtN(Rtot)+" Ω";
+ draw();
+}
+
+function draw(){const l=44,b=205,t=14,r=288,ym=2.4,xm=12,X=v=>l+v/xm*(r-l),Y=i=>b-i/ym*(b-t);
+ let s=`<rect x="${l}" y="${t}" width="${r-l}" height="${b-t}" fill="none" stroke="#2a3d86"/>`;
+ [0,4,8,12].forEach(v=>s+=`<text x="${X(v)}" y="${b+16}" text-anchor="middle" font-size="12" fill="#b6c2ea">${v}</text>`);
+ [0,1,2].forEach(i=>s+=`<text x="${l-6}" y="${Y(i)+4}" text-anchor="end" font-size="12" fill="#b6c2ea">${i}</text>`);
+ s+=`<text x="${(l+r)/2}" y="${b+34}" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">V (volt)</text><text x="12" y="${(t+b)/2}" font-size="13" font-weight="700" fill="#ffffff" transform="rotate(-90 12 ${(t+b)/2})" text-anchor="middle">I_total (ampere)</text>`;
+ s+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(12)}" y2="${Y(Math.min(12/Rtot,ym))}" stroke="#22d3ee" stroke-width="3"/>`;
+ pts.forEach(p=>s+=`<circle cx="${X(p.v)}" cy="${Y(p.i)}" r="4.5" fill="#4ade80"/>`);
+ if(ping&&pts.length){const q=pts[pts.length-1];s+=`<circle class="ping" cx="${X(q.v)}" cy="${Y(q.i)}" r="5"/>`;ping=false}
+ s+=`<circle cx="${X(V)}" cy="${Y(I)}" r="6.5" fill="#ffd23f" stroke="#fff" stroke-width="1.5"/>`;
+ s+=`<text x="${r-4}" y="${t+16}" text-anchor="end" font-size="12" fill="#b6c2ea">1/R_tot = ${f3(1/Rtot)}</text>`;$("gr").innerHTML=s}
+
+function tbl(){
+ const labelMode={single:"Tunggal",series:"Seri",parallel:"Paralel"};
+ $("tb").innerHTML=pts.length?pts.map((p,k)=>`<tr><td>${k+1}</td><td>${labelMode[p.m]}</td><td>${fmtN(p.r)}</td><td>${f1(p.v)}</td><td>${f3(p.i)}</td><td>${p.i>0?fmtN(p.v/p.i):"-"}</td></tr>`).join(""):'<tr><td colspan="6">Belum ada data</td></tr>';
+ if(ping&&pts.length)$("tb").lastElementChild.classList.add("new");draw();
+}
+
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));
+ mode=b.dataset.mode;renderRangkaianSVG();upd();
+});
+$("sv").oninput=e=>{V=+e.target.value;upd()};
+$("sr1").oninput=e=>{R1=+e.target.value;upd()};
+$("sr2").oninput=e=>{R2=+e.target.value;upd()};
+
+let ping=false,pola=false;
+$("rec").onclick=()=>{if(pts.length>=10)pts.shift();pts.push({m:mode,v:V,i:I,r:Rtot});ping=true;tbl();floatText($("rec"),"+1 data ✓");sfx("rec");
+ const vs=new Set(pts.filter(p=>Math.abs(p.r-Rtot)<0.01).map(p=>p.v));
+ if(!pola&&vs.size>=4){pola=true;setTimeout(()=>{addStar($("rec"));const p=ctr($("rec"));confetti(p[0],p[1],24);toast("📈 Pola ditemukan! Pada R_total tetap, V dan I berbanding lurus.");sfx("up")},350)}};
+$("clr").onclick=()=>{if(!pts.length)return;$("tb").classList.add("clearing");floatText($("clr"),"🧹 Bersih");
+ setTimeout(()=>{$("tb").classList.remove("clearing");pts=[];tbl()},reduce?0:260)};
+
+let chal={type:0,v:12,r1:20,r2Target:40,iTarget:0.2},cDone=false;
+function newC(nextType=false){
+ if(nextType)chal.type=(chal.type+1)%3;
+ else chal.type=Math.random()*3|0;
+ cDone=false;$("cf").textContent="";$("cNext").hidden=true;
+ if(chal.type===0){
+  chal.v=pilih([12,18,24]);chal.r1=pilih([10,20,30]);chal.r2Target=pilih([10,20,30,40,50,60]);
+  chal.iTarget=chal.v/(chal.r1+chal.r2Target);
+  $("cBadge").textContent="Tantangan 1 · Rangkaian Seri";
+  $("cDesc").textContent="Atur hambatan R₂ pada rangkaian seri di bawah agar kuat arus total mencapai target!";
+  $("cLabel").textContent="Hambatan R₂";
+  $("sc").min=5;$("sc").max=100;$("sc").step=5;$("sc").value=15;
+  $("cq").textContent=`V = ${chal.v} V · R₁ = ${chal.r1} Ω · Target I_total = ${f3(chal.iTarget)} A`;
+ }else if(chal.type===1){
+  const pairs=[[20,20],[20,60],[30,60],[15,30],[40,40]];
+  const p=pilih(pairs);chal.v=pilih([6,12]);chal.r1=p[0];chal.r2Target=p[1];
+  chal.iTarget=chal.v/chal.r1+chal.v/chal.r2Target;
+  $("cBadge").textContent="Tantangan 2 · Rangkaian Paralel";
+  $("cDesc").textContent="Atur hambatan cabang R₂ pada rangkaian paralel di bawah agar arus utama pada amperemeter sesuai target!";
+  $("cLabel").textContent="Hambatan Cabang R₂";
+  $("sc").min=5;$("sc").max=100;$("sc").step=5;$("sc").value=50;
+  $("cq").textContent=`V = ${chal.v} V · R₁ = ${chal.r1} Ω · Target I_total = ${f3(chal.iTarget)} A`;
+ }else{
+  const pairs=[[10,30],[20,20],[20,60],[30,60],[15,30]];
+  const p=pilih(pairs);chal.v=pilih([6,12,18]);chal.r1=p[0];chal.r2Target=p[1];
+  chal.rTotTarget=(p[0]*p[1])/(p[0]+p[1]);
+  chal.iTarget=chal.v/chal.rTotTarget;
+  $("cBadge").textContent="Tantangan 3 · Analisis R_total";
+  $("cDesc").textContent="Amperemeter membaca arus total seperti di bawah. Hitung hambatan pengganti (R_total) rangkaian paralel tersebut lalu atur slider!";
+  $("cLabel").textContent="Tebakan R_total";
+  $("sc").min=5;$("sc").max=60;$("sc").step=2.5;$("sc").value=25;
+  $("cq").textContent=`V = ${chal.v} V · R₁ = ${chal.r1} Ω · R₂ = ${chal.r2Target} Ω · Terukur I = ${f3(chal.iTarget)} A`;
+ }
+ cu();
+}
+function cu(){
+ const val=+$("sc").value;$("cr").textContent=fmtN(val)+" Ω";
+ if(chal.type===0){
+  const curI=chal.v/(chal.r1+val);
+  $("cSvg").innerHTML=gambarDiagram({type:"series",V:chal.v+" V",R1:"R₁ = "+chal.r1+" Ω",R2:"R₂ = "+val+" Ω",note:"I terbaca = "+f3(curI)+" A"});
+  $("cLive").innerHTML=`<span>R_total = ${chal.r1+val} Ω</span><span>I terbaca = ${f3(curI)} A</span>`;
+ }else if(chal.type===1){
+  const i1=chal.v/chal.r1,i2=chal.v/val,curI=i1+i2;
+  $("cSvg").innerHTML=gambarDiagram({type:"parallel",V:chal.v+" V",R1:"R₁ = "+chal.r1+" Ω",R2:"R₂ = "+val+" Ω",note:"I terbaca = "+f3(curI)+" A"});
+  $("cLive").innerHTML=`<span>I₁ = ${f3(i1)} A</span><span>I₂ = ${f3(i2)} A</span><span>I_total = ${f3(curI)} A</span>`;
+ }else{
+  $("cSvg").innerHTML=gambarDiagram({type:"parallel",V:chal.v+" V",R1:"R₁ = "+chal.r1+" Ω",R2:"R₂ = "+chal.r2Target+" Ω",note:"Amperemeter A = "+f3(chal.iTarget)+" A"});
+  $("cLive").innerHTML=`<span>Tegangan V = ${chal.v} V</span><span>Arus Total A = ${f3(chal.iTarget)} A</span>`;
+ }
+}
+function roll(e){if(reduce)return;const fin=e.textContent;let n=0;clearInterval(e._t);
+ e._t=setInterval(()=>{if(++n>6){clearInterval(e._t);e.textContent=fin;bumpEl(e);return}e.textContent=fin.replace(/\d+/g,m=>String(Math.floor(Math.random()*Math.pow(10,m.length))).padStart(m.length,"0"))},55)}
+$("sc").oninput=cu;
+$("cn").onclick=()=>{newC(true);roll($("cq"))};
+$("cNext").onclick=()=>{newC(true);roll($("cq"))};
+$("cc").onclick=()=>{
+ const val=+$("sc").value;
+ const target=chal.type===2?chal.rTotTarget:chal.r2Target;
+ const ok=Math.abs(val-target)<0.05;
+ $("cf").style.color=ok?"var(--ok)":"var(--bad)";
+ if(ok&&!cDone){cDone=true;addStar($("cc"));fx($("cc"),14);cheer($("cc"));hit(true);sfx("ok");$("cNext").hidden=false}
+ else if(!ok){hit(false);sfx("no");shakeEl($("cc").closest(".card"));floatText($("cc"),"Coba analisis lagi 💪")}
+
+ if(ok){
+  if(chal.type===0)$("cf").innerHTML=`🎉 Tepat! R<sub>total</sub> = ${frac("V","I")} = ${frac(chal.v,f3(chal.iTarget))} = ${chal.r1+target} Ω → R₂ = <b>${target} Ω</b>.`;
+  else if(chal.type===1)$("cf").innerHTML=`🎉 Tepat! I₁ = ${frac(chal.v,chal.r1)} = ${f3(chal.v/chal.r1)} A, maka I₂ = ${f3(chal.iTarget)} − ${f3(chal.v/chal.r1)} = ${f3(chal.v/target)} A → R₂ = <b>${target} Ω</b>.`;
+  else $("cf").innerHTML=`🎉 Analisis Jitu! ${frac("1","R<sub>total</sub>")} = ${frac("1",chal.r1)} + ${frac("1",chal.r2Target)} → R<sub>total</sub> = ${frac("V","I<sub>total</sub>")} = ${frac(chal.v,f3(chal.iTarget))} = <b>${fmtN(target)} Ω</b>.`;
+ }else{
+  if(chal.type===2)$("cf").innerHTML=val>target?"Terlalu besar. Ingat pada paralel R<sub>total</sub> selalu lebih kecil dari hambatan cabang terkecil!":`Terlalu kecil. Gunakan ${frac("1","R<sub>total</sub>")} = ${frac("1","R₁")} + ${frac("1","R₂")} atau R<sub>total</sub> = ${frac("V","I<sub>total</sub>")}.`;
+  else{
+   const curI=chal.type===0?chal.v/(chal.r1+val):chal.v/chal.r1+chal.v/val;
+   $("cf").textContent=curI>chal.iTarget?"Arus terbaca masih terlalu besar. Perbesar hambatan R₂!":"Arus terbaca masih terlalu kecil. Perkecil hambatan R₂!";
+  }
+ }
+};
+
+let Q=[],qi=0,sc=0,jawab=[],salah=[],t0=0,percobaan=0,siswa={nama:"",kelas:""};
+try{const d=JSON.parse(localStorage.getItem("ohmSiswa")||"{}");siswa.nama=d.nama||"";siswa.kelas=d.kelas||"";percobaan=+d.p||0}catch(e){}
+function simpanSiswa(){try{localStorage.setItem("ohmSiswa",JSON.stringify({nama:siswa.nama,kelas:siswa.kelas,p:percobaan}))}catch(e){}}
+function animQ(z){z.classList.remove("qin");void z.offsetWidth;z.classList.add("qin")}
+function formAwal(){const z=$("qz");animQ(z);
+ z.innerHTML=`<div class="big">📝</div>
+ <label class="sl" for="qn">Nama Lengkap</label><input class="in" id="qn" maxlength="40" autocomplete="name">
+<label class="sl" for="qk">Kelas</label><input class="in" id="qk" maxlength="12" placeholder="contoh: XI-IPA 1" autocomplete="off">
+<p class="fb" id="qe" aria-live="polite"></p><button class="btn" id="qgo">Mulai Kuis</button>`;
+ $("qn").value=siswa.nama;$("qk").value=siswa.kelas;
+ const go=()=>{const n=$("qn").value.replace(/[|,<>]/g," ").trim(),k=$("qk").value.replace(/[|,<>]/g," ").trim();
+  if(n.length<2||!k){$("qe").style.color="var(--bad)";$("qe").textContent="Isi nama lengkap dan kelasmu dulu ya.";shakeEl($("qgo"));return}
+  siswa={nama:n,kelas:k};mulai()};
+ $("qgo").onclick=go;[$("qn"),$("qk")].forEach(i=>i.onkeydown=e=>{if(e.key==="Enter")go()})}
+function mulai(){Q=buatSoal(KONFIG.JUMLAH_SOAL);qi=0;sc=0;jawab=[];salah=[];t0=Date.now();percobaan++;simpanSiswa();qr()}
+
+function qr(){const z=$("qz");animQ(z);
+ if(qi>=Q.length){akhir(z);return}
+ const q=Q[qi];
+ let mediaHTML="";
+ if(q.diag){
+  mediaHTML=`<div class="qsim">
+   <div class="qsim-head"><span>⚡ Diagram Rangkaian Soal</span>${q.sim?`<button type="button" class="btn sun sm" id="togSim">🔬 Buka Mini-Simulator</button>`:""}</div>
+   <div id="qDiagBox">${gambarDiagram(q.diag)}</div>
+   ${q.sim?`<div class="qsim-ctrl" id="qSimBox" hidden>
+    <div style="font-size:.82rem;color:#ffd23f;margin-bottom:4px">Geser slider di bawah untuk mensimulasikan rangkaian ini secara langsung:</div>
+    <label class="sl">Tegangan V <span id="qsv_t">${q.sim.v} V</span></label>
+    <input type="range" id="qsv" min="2" max="24" step="1" value="${q.sim.v}">
+    <label class="sl">Hambatan R₁ <span id="qsr1_t">${q.sim.r1} Ω</span></label>
+    <input type="range" id="qsr1" min="5" max="80" step="5" value="${q.sim.r1}">
+    <label class="sl">Hambatan R₂ <span id="qsr2_t">${q.sim.r2} Ω</span></label>
+    <input type="range" id="qsr2" min="5" max="80" step="5" value="${q.sim.r2}">
+    <div class="qsim-read" id="qSimRead"></div>
+   </div>`:""}
+  </div>`;
+ }
+
+ z.innerHTML=`<div class="pbar"><i style="width:${qi/Q.length*100}%"></i></div>
+ <div><b>Soal ${qi+1} dari ${Q.length}</b> <span class="badge">${q.t}</span></div>
+ <p style="font-weight:600">${q.q}</p>
+ ${mediaHTML}
+ `+q.o.map((o,k)=>`<button class="opt" data-k="${k}">${o}</button>`).join("")+`<p class="fb" id="qf" aria-live="polite"></p>`;
+
+ if(q.sim){
+  const updMini=()=>{
+   const sv=+$("qsv").value,sr1=+$("qsr1").value,sr2=+$("qsr2").value;
+   $("qsv_t").textContent=sv+" V";$("qsr1_t").textContent=sr1+" Ω";$("qsr2_t").textContent=sr2+" Ω";
+   if(q.sim.mode==="series"){
+    const rt=sr1+sr2,it=sv/rt,v1=it*sr1,v2=it*sr2;
+    $("qDiagBox").innerHTML=gambarDiagram({type:"series",V:sv+" V",R1:"R₁="+sr1+"Ω",R2:"R₂="+sr2+"Ω",note:`I = ${f3(it)} A · V₁=${f1(v1)}V · V₂=${f1(v2)}V`});
+    $("qSimRead").innerHTML=`<span>R_tot: ${rt} Ω</span><span>I_tot: ${f3(it)} A</span><span>V₁: ${f1(v1)} V</span><span>V₂: ${f1(v2)} V</span>`;
+   }else{
+    const rt=(sr1*sr2)/(sr1+sr2),i1=sv/sr1,i2=sv/sr2,it=i1+i2;
+    $("qDiagBox").innerHTML=gambarDiagram({type:"parallel",V:sv+" V",R1:"R₁="+sr1+"Ω",R2:"R₂="+sr2+"Ω",note:`I_tot=${f3(it)}A (I₁=${f3(i1)}A, I₂=${f3(i2)}A)`});
+    $("qSimRead").innerHTML=`<span>R_tot: ${fmtN(rt)} Ω</span><span>I₁: ${f3(i1)} A</span><span>I₂: ${f3(i2)} A</span><span>I_tot: ${f3(it)} A</span>`;
+   }
+  };
+  $("togSim").onclick=()=>{const b=$("qSimBox");b.hidden=!b.hidden;$("togSim").textContent=b.hidden?"🔬 Buka Mini-Simulator":"✖ Tutup Simulator";if(!b.hidden)updMini()};
+  ["qsv","qsr1","qsr2"].forEach(id=>$(id).oninput=updMini);
+ }
+
+ z.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const k=+b.dataset.k,os=z.querySelectorAll(".opt"),ok=k===q.a;os.forEach(x=>x.disabled=true);os[q.a].classList.add("ok");
+  z.querySelector(".pbar i").style.width=(qi+1)/Q.length*100+"%";jawab.push([q.id,ok?1:0]);
+  if(ok){sc++;addStar(b);fx(b,12);hit(true);sfx("ok")}else{b.classList.add("no","shake");hit(false);sfx("no");salah.push(q)}
+  $("qf").innerHTML=(ok?"<span style='color:var(--ok)'>✓ Analisis Benar!</span> ":"<span style='color:var(--bad)'>✗ Kurang Tepat.</span> ")+"<span style='font-weight:500'>"+q.e+"</span>";
+  const n=document.createElement("button");n.className="btn";n.textContent=qi<Q.length-1?"Soal Berikutnya ➔":"Lihat Skor Akhir";n.onclick=()=>{qi++;qr()};z.appendChild(n)})}
+
+function akhir(z){const n=Q.length,nilai=Math.round(sc/n*100),
+ kode=buatKode({n:siswa.nama,k:siswa.kelas,t:Math.floor(Date.now()/1000),s:sc,m:n,d:Math.round((Date.now()-t0)/1000),p:percobaan,q:jawab}),
+ wa="https://wa.me/"+KONFIG.WA_GURU+"?text="+encodeURIComponent("Kode hasil kuis OhmLab ("+siswa.nama+", "+siswa.kelas+"): "+kode);
+ z.innerHTML=`<div class="big">${nilai===100?"🏆":nilai>=70?"🎉":"💪"}</div><div class="eq">Skor: ${sc} dari ${n} (Nilai: ${nilai})</div><p style="text-align:center;max-width:none">${nilai===100?"Luar biasa! Pemahaman rangkaian seri-paralelmu sangat matang.":nilai>=70?"Bagus! Tinjau kembali pembahasan soal yang masih keliru.":"Ayo eksplorasi lagi menu Simulasi untuk memahami pembagian arus dan tegangan!"}</p>`+
+ (salah.length?`<details><summary>Pembahasan soal yang salah (${salah.length})</summary>`+salah.map(q=>`<p><b>${q.q}</b><br>Jawaban benar: <b>${q.o[q.a]}</b><br><span class="mut">${q.e}</span></p>`).join("")+`</details>`:"")+
+ `<p class="fb" id="ks" aria-live="polite" style="text-align:center;font-weight:800;max-width:none"></p><div class="kode" id="kbox"><b>Kode hasil untuk guru</b><p class="mut" style="margin:.3em 0 .6em">Salin kode ini, lalu kirim ke gurumu supaya nilaimu tercatat.</p><textarea class="in" id="kd" readonly rows="4" aria-label="Kode hasil"></textarea><div class="row"><button class="btn sun" id="kc">📋 Salin kode</button><a class="btn alt" href="${wa}" target="_blank" rel="noopener">💬 Kirim lewat WhatsApp</a></div><p class="fb" id="kf" aria-live="polite"></p></div>
+<div class="row"><button class="btn" id="rs">Ulangi kuis (10 soal baru)</button><button class="btn alt" id="gn">Ganti nama</button></div>`;
+ $("kd").value=kode;$("kd").onfocus=e=>e.target.select();
+ const kb=$("kbox"),ks=$("ks");
+ const kirim=()=>{ks.style.color="var(--mut)";ks.textContent="⏳ Mengirim nilaimu ke guru...";
+  kirimHasil(kode).then(()=>{ks.style.color="var(--ok)";ks.textContent="✓ Nilaimu sudah terkirim ke guru."},
+   ()=>{ks.style.color="var(--bad)";ks.innerHTML='Nilai belum terkirim. Pastikan internetmu aktif. <button class="btn alt" id="ulang" type="button">Kirim ulang</button><br><span class="mut" style="font-weight:600">Kalau tetap gagal, salin kode di bawah dan kirim ke gurumu.</span>';kb.hidden=false;$("ulang").onclick=kirim})};
+ if(KONFIG.URL_REKAP){kb.hidden=true;kirim()}else ks.hidden=true;
+ $("kc").onclick=()=>{const done=()=>{$("kf").style.color="var(--ok)";$("kf").textContent="Kode tersalin ✓ Sekarang kirim ke gurumu.";floatText($("kc"),"Tersalin ✓")},
+  manual=()=>{$("kd").select();try{document.execCommand("copy")}catch(e){}done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(kode).then(done,manual);else manual()};
+ $("rs").onclick=mulai;$("gn").onclick=formAwal;
+ if(nilai>=70){const p=ctr($("rs"));confetti(p[0],p[1]-60,nilai===100?44:24);sfx("up")}}
+
+let stars=0;const LV=[[0,"Pemula"],[3,"Teknisi Muda"],[6,"Insinyur Listrik"],[10,"Master Ohm"]];
+function addStar(dari){const inc=()=>{stars++;const e=$("stars");e.textContent="⭐ "+stars;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop");
+  const lv=LV.filter(l=>stars>=l[0]).pop();e.title="Level: "+lv[1];
+  if(lv[0]===stars&&stars>0){toast("🎖️ Level baru: "+lv[1]+"!");const p=ctr(e);confetti(p[0],p[1]+10,24);sfx("up")}};
+ if(!dari||reduce){inc();return}
+ const a=dari.getBoundingClientRect(),b=$("stars").getBoundingClientRect(),s=document.createElement("div"),x0=a.left+a.width/2,y0=a.top+a.height/2,x1=b.left+b.width/2,y1=b.top+b.height/2;
+ s.className="fly";s.textContent="⭐";document.body.appendChild(s);
+ s.animate([{transform:"translate("+x0+"px,"+y0+"px) scale(.6)"},{transform:"translate("+x0+"px,"+(y0-40)+"px) scale(1.3)",offset:.3},{transform:"translate("+x1+"px,"+y1+"px) scale(.7)"}],{duration:650,easing:"ease-in-out"}).onfinish=()=>{s.remove();inc()}}
+function hero(){const v=+$("hv").value,i=v/20,L=Math.min(1,i/.6);$("hvv").textContent=f1(v)+" V";$("hlamp").setAttribute("opacity",L);$("hhalo").setAttribute("opacity",L*.9);$("hread").textContent="I = "+f3(i)+" A";
+ const fl=$("hflow");fl.style.animationPlayState=v===0?"paused":"running";fl.style.animationDuration=(1.4/Math.max(v/6,.15))+"s";
+ setMood("hmood",i<.05?"Lampu padam 😴":i<.2?"Lampu redup 🙂":i<.4?"Lampu menyala 😀":i<.6?"Terang! 😎":"Terang banget! 🤩")}
+$("hv").oninput=hero;hero();
+renderRangkaianSVG();formAwal();newC(false);upd();tbl();show(location.hash.slice(1)||"beranda",false);window.addEventListener("load",()=>window.scrollTo(0,0));
+</script>
+</body>
+</html>
